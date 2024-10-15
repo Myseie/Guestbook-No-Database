@@ -1,0 +1,49 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<h2>Gästbok</h2>
+
+
+@if(!string.IsNullOrEmpty(ViewBag.Error))
+{
+    <p style="color:red">@ViewBag.Error</p>
+    
+}
+
+
+<form asp-action="AddEntry">
+    <input type="text" method="post" placeholder="Ditt Namn" />
+    <textarea name="message" placeholder="Skriv ditt meddelande här" ></textarea>
+    <button type="submit">Posta</button>
+</form>
+
+<h3>Inlägg</h3>
+<form asp-action="index" method="get">
+    <label for="sortOrder">Sortera efter:</label>
+    <select name="sortOrder" id="sortOrder">
+        <option value="newest"> Nyast först </option>
+        <option value="oldest">Äldst först</option>
+    </select>
+    <button type="submit">Sortera</button>
+</form>
+<p>Antal med inlägg: @ViewBag.EntryCount</p>
+
+
+<ul>
+    @for(int i = 0; i < Model.Count; i++)
+    {
+        <li>
+           <strong>@Model[i].Name</strong> (@Model[i].Date.ToString("g")): <br />
+           @Model[i].Message
+           <form asp-action="RemoveEntry" method="post" style="display:inline;">
+               <input type="hidden" name="index" value="@i" />
+               <button type="submit">Ta bort</button>
+           </form>
+        </li>
+    }
+</ul>
